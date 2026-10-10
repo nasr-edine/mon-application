@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mes mots magiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b5e;--paper:#f3f6ff;--line:#d3def8;--sun:#ffc533;--mint:#0f9d6b;--ber:#d62a68;--sky:#3b6cf0;--fs:1.25}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Andika,"Trebuchet MS",Verdana,sans-serif;color:var(--ink);background:var(--paper) linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 32px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/32px 100%;font-size:calc(1rem*var(--fs)/1.25)}
+body[data-sp="1"]{letter-spacing:.1em;word-spacing:.2em}
+#app{max-width:760px;margin:0 auto;padding:12px 14px 40px}
+h2{margin:18px 0 8px;font-size:1.3em}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid var(--sky);outline-offset:2px}
+.card{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 4px 0 var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin:10px 0}
+.grow{flex:1;min-width:0}
+.hd{display:flex;gap:12px;align-items:center}
+.av{font-size:3.2em;line-height:1;background:var(--sun);border-radius:50%;width:1.4em;height:1.4em;display:grid;place-items:center;border:2px solid var(--ink)}
+.nm{border:0;border-bottom:2px dashed var(--line);background:none;font-weight:700;font-size:1.2em;width:100%;padding:2px}
+.bar{display:block;height:14px;border-radius:9px;background:#e4ebff;border:2px solid var(--ink);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--mint)}
+.pill{background:var(--sun);border:2px solid var(--ink);border-radius:20px;padding:4px 12px;font-weight:700;white-space:nowrap}
+.nav{display:flex;gap:6px;margin:8px 0}
+.nav button{flex:1;padding:10px 4px;border:2px solid var(--ink);border-radius:14px;background:#fff;font-weight:700}
+.nav button.on{background:var(--ink);color:#fff}
+.btn,.big{border:2px solid var(--ink);border-radius:16px;padding:12px 22px;font-weight:700;background:#fff;box-shadow:0 4px 0 var(--ink)}
+.btn:active,.big:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.4}
+.go{background:var(--mint);color:#fff;font-size:1.15em}
+.red{background:var(--ber);color:#fff}
+.big{font-size:3em;border-radius:50%;width:1.8em;height:1.8em;padding:0;background:var(--sky);color:#fff}
+.ghost{border:2px solid var(--ink);background:#fff;border-radius:12px;padding:6px 12px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.lc{text-align:left;display:flex;flex-direction:column;gap:4px;margin:0;background:#fff}
+.lc .st{color:#e0a000;letter-spacing:2px}
+.top{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.stage,.c{text-align:center;padding:22px 14px}
+.word{font-size:calc(clamp(2.6rem,13vw,5.6rem)*var(--fs)/1.25);font-weight:700;line-height:1.1;word-break:break-word;margin:14px 0}
+.em{font-size:4em}
+.stage input,.fx{font-size:calc(2rem*var(--fs)/1.25);text-align:center;width:100%;max-width:420px;padding:10px;border:3px solid var(--ink);border-radius:14px;margin:10px 0}
+.fb{font-size:calc(2.3rem*var(--fs)/1.25);font-weight:700;margin:8px 0}
+.fb b{display:inline-block;min-width:.5em}
+.k{color:var(--mint)}
+.w{color:var(--ber);text-decoration:underline wavy}
+.g{color:var(--ber)}
+.f{background:var(--sun);border-radius:6px;padding:0 2px;color:var(--ink)}
+.lab{font-size:.8em;font-weight:400;opacity:.8}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chips span{background:#eef2ff;border:2px solid var(--line);border-radius:10px;padding:3px 10px}
+.note{background:#fff7d6;border-radius:12px;padding:10px}
+.bd{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.bd .card{margin:0;text-align:center;padding:10px}
+.bd .lock{filter:grayscale(1);opacity:.45}
+.bd .e{font-size:2.6em}
+.avs{display:flex;flex-wrap:wrap;gap:8px}
+.avs button{font-size:2.2em;border:3px solid var(--line);border-radius:50%;background:#fff;width:1.6em;height:1.6em;padding:0}
+.avs button.on{border-color:var(--ink);background:var(--sun)}
+.avs button:disabled{filter:grayscale(1);opacity:.4}
+.set label{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.set input[type=number],.set select{border:2px solid var(--ink);border-radius:10px;padding:4px 8px;width:110px;font-size:1rem}
+.set input[type=checkbox]{width:26px;height:26px}
+.fx{display:block;font-size:1.1rem;max-width:none;text-align:left;margin:6px 0}
+textarea.fx{min-height:200px}
+.cf{position:fixed;top:-40px;font-size:28px;animation:fall 2.6s linear forwards;pointer-events:none;z-index:9}
+@keyframes fall{to{transform:translateY(110vh) rotate(300deg)}}
+.live{min-height:1.8em;margin:6px 0}#tick{font-size:1.6em}.lg{width:100%;border-collapse:collapse;margin-top:8px}.lg td{padding:4px 6px;border-bottom:1px dashed var(--line);vertical-align:top}
+.li{display:flex;gap:8px;align-items:center;margin:0}
+@media (prefers-reduced-motion:reduce){.bar>i{transition:none!important}}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const K='mots-magiques-v1';
+const DL=[
+["Liste 1 · maison, balai…","maison balai craie dizaine vingtaine clair mais fraise aider défaire salaire araignée semaine aimer maître maîtresse anniversaire vaisselle fontaine chaise"],
+["Liste 2 · blanc, chant…","blanc chant banc dans quand gant rang;tant pis;enfant aimant danse pantalon géant maman lancer brancher transporter panthère éléphant chanson dimanche orange"],
+["Liste 3 · jaune, chaud…","jaune chaud gauche épaule chaussure chauffeur aucun autre aussi sauvage pauvre haut faute aussitôt chauve restaurant autour autant automne sauce fauteuil aujourd’hui"],
+["Liste 4 · reine, peine…","reine peine veine beignet seize beige baleine pleine neige seigneur peignoir treize corneille bouteille groseille abeille réveiller réveillon oreille oreiller"],
+["Liste 5 · vent, vendredi…","vent vendredi parent content serpent menton enfant dent agent médicament sens entrée fendre sentir souvent trente pendule environ endormir pensée"]
+].map(l=>[l[0],l[1].split(/[ ;]/).map(w=>w=='tant'?'tant pis':w=='pis'?null:w).filter(Boolean)]);
+const DEF={asr:1,adv:0,d0:4,d1:3,d2:6,d3:1.5,on:{l0:1,l1:1,l2:1,l3:1,rec:1},copy:'cahier',tts:1,rate:.8,voice:'',tr:0,shuf:1,snd:1,fs:2,sp:0,sens:1};
+const AVS=[['🦊',1],['🐼',1],['🦄',1],['🐙',2],['🦖',3],['🐲',4],['🚀',5],['🧙‍♀️',6],['🦸‍♀️',8],['🐉',10],['👑',12],['🌈',15]];
+const B=[
+['🌱','Premier pas','Terminer une session',d=>d.st.s>=1],
+['📚','10 mots justes','10 mots bien écrits',d=>d.st.ok>=10],
+['🎯','50 mots justes','50 mots bien écrits',d=>d.st.ok>=50],
+['🏆','100 mots justes','100 mots bien écrits',d=>d.st.ok>=100],
+['💎','250 mots justes','250 mots bien écrits',d=>d.st.ok>=250],
+['✨','Sans faute','Une session parfaite',d=>d.st.perf>=1],
+['🔥','10 d’affilée','10 mots justes à la suite',d=>d.st.best>=10],
+['📅','3 jours de suite','S’entraîner 3 jours de suite',d=>d.strk>=3],
+['🌟','7 jours de suite','S’entraîner 7 jours de suite',d=>d.strk>=7],
+['🚀','Niveau 5','Atteindre le niveau 5',d=>lvl(d.xp)>=5],
+['🎖️','10 sessions','Terminer 10 sessions',d=>d.st.s>=10],
+['🧠','Maître d’une liste','Maîtriser tous les mots d’une liste',d=>d.lists.some(l=>l.w.length&&l.w.every(w=>(d.w[w]||{}).box>=3))]
+];
+function init(){return{name:'',av:'🦊',xp:0,lists:DL.map((l,i)=>({id:'d'+i,n:l[0],w:l[1]})),w:{},bd:{},st:{s:0,ok:0,best:0,perf:0},day:'',strk:0,hist:[],set:JSON.parse(JSON.stringify(DEF))}}
+let D;try{D=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!D||!D.lists)D=init();
+fix();
+function fix(){D.log=D.log||[];D.set=Object.assign({},DEF,D.set,{on:Object.assign({},DEF.on,(D.set||{}).on)});D.st=Object.assign({s:0,ok:0,best:0,perf:0},D.st);D.w=D.w||{};D.bd=D.bd||{};D.hist=D.hist||[]}
+function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
+const lvl=x=>Math.floor((1+Math.sqrt(1+x/12.5))/2);
+const ymd=(o=0)=>{const d=new Date(Date.now()-o*864e5);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>s.trim().toLowerCase().replace(/'/g,'’').normalize('NFC');
+const mast=l=>l.w.filter(w=>(D.w[w]||{}).box>=3).length;
+const strk=()=>(D.day==ymd()||D.day==ymd(1))?D.strk:0;
+
+/* correction lettre à lettre */
+function diff(t,a){const n=t.length,m=a.length,d=[];
+for(let i=0;i<=n;i++){d[i]=[];for(let j=0;j<=m;j++)d[i][j]=i&&j?0:i+j}
+for(let i=1;i<=n;i++)for(let j=1;j<=m;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(t[i-1]==a[j-1]?0:1));
+let i=n,j=m;const o=[];
+while(i||j){
+if(i&&j&&t[i-1]==a[j-1]&&d[i][j]==d[i-1][j-1]){o.push(['k',t[i-1]]);i--;j--}
+else if(i&&j&&d[i][j]==d[i-1][j-1]+1){o.push(['s',a[j-1],t[i-1]]);i--;j--}
+else if(i&&d[i][j]==d[i-1][j]+1){o.push(['m',t[i-1]]);i--}
+else{o.push(['x',a[j-1]]);j--}}
+return o.reverse()}
+
+/* voix + sons */
+function say(w){if(!D.set.tts||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang='fr-FR';u.rate=D.set.rate;const vs=speechSynthesis.getVoices();const v=vs.find(v=>v.name==D.set.voice)||vs.find(v=>/^fr/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=()=>{if(V=='set')render()};
+let AC;function sfx(ok){if(!D.set.snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime;(ok?[523,659,784]:[220,196]).forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;g.gain.setValueAtTime(.15,t+i*.1);g.gain.exponentialRampToValueAtTime(.001,t+i*.1+.18);o.connect(g);g.connect(AC.destination);o.start(t+i*.1);o.stop(t+i*.1+.2)})}catch(e){}}
+function conf(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const e=['⭐','🎉','✨','💛','🌈'];for(let i=0;i<30;i++){const s=document.createElement('span');s.className='cf';s.textContent=e[i%5];s.style.left=Math.random()*95+'vw';s.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),3600)}}
+
+/* reconnaissance vocale (lecture à voix haute) */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let LOCAL=0;try{if(SR&&SR.available)SR.available({langs:['fr-FR'],processLocally:true}).then(a=>{LOCAL=a=='available'?1:0}).catch(()=>{})}catch(e){}
+const rdPh=p=>p.k=='l1'||p.k=='l3'||(p.k=='l2'&&D.set.copy!='clavier');
+const dg=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+const NUM={treize:'13',seize:'16',trente:'30'};
+function lev(a,b){const d=[];for(let i=0;i<=a.length;i++)d[i]=[i];for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[a.length][b.length]}
+function pk(w){return dg(w).replace(/ /g,'').replace(/ph/g,'f').replace(/qu/g,'k').replace(/(an|en|am|em)(?![aeiouy])/g,'A').replace(/(ain|ein|in|im)(?![aeiouy])/g,'I').replace(/(on|om)(?![aeiouy])/g,'O').replace(/eau|au/g,'o').replace(/ai|ei/g,'e').replace(/c(?=[eiy])/g,'s').replace(/c/g,'k').replace(/g(?=[eiy])/g,'j').replace(/gu/g,'g').replace(/(.)\1+/g,'$1').replace(/(er|ez|es|e|s|t|d|x|z|p)$/,'')}
+function heard(w,t){const W=dg(w),T=dg(t),P=' '+T+' ';if(P.includes(' '+W+' ')||(NUM[W]&&P.includes(' '+NUM[W]+' ')))return 1;
+const tk=T.split(' ').filter(Boolean);if(W.length>=6&&tk.some(x=>x.length>=5&&lev(x,W)<=1))return 1;
+if(W.includes(' '))return 0;const k=pk(W);if(k.length<2)return 0;
+return tk.some((x,i)=>pk(x)==k||(i&&pk(tk[i-1]+x)==k))?1:0}
+function ent(pk,i){S.lg[pk]=S.lg[pk]||{};return S.lg[pk][i]=S.lg[pk][i]||{w:S.ws[i],ok:0,ch:[]}}
+function liveTxt(t){const l=$('#live');if(l)l.textContent=t}
+function chk(pk,idx,alts){const e=ent(pk,idx);if(e.ok||!alts.some(a=>heard(e.w,a)))return;e.ok=1;S.xp+=3;
+if(S.cw==idx&&S.ph[S.pi]&&S.ph[S.pi].k==pk){const m=$('#tick');if(m)m.textContent='✅';
+if(D.set.adv&&!S.wait)setTimeout(()=>{if(S&&S.cw==idx&&S.wi==idx&&S.ph[S.pi]&&S.ph[S.pi].k==pk)nxt()},700)}}
+const NA='Le micro est bloqué pour ce site. Clique sur le cadenas 🔒 à gauche de l’adresse → Micro → Autoriser, puis recharge la page. Si aucune demande ne s’affiche, vérifie dans le navigateur (chrome://settings/content/microphone ou edge://settings/content/microphone) puis dans Windows : Paramètres → Confidentialité et sécurité → Microphone (accès autorisé pour cette session et pour les applications de bureau).';
+function micErr(c){return({nosr:'Ce navigateur ne gère pas la reconnaissance vocale : utilise Chrome ou Edge (ni Firefox ni Brave).',insecure:'La page doit être ouverte en https.',nomd:'Le navigateur ne donne pas accès au micro.',NotAllowedError:NA,'not-allowed':NA,SecurityError:NA,'service-not-allowed':'Le navigateur bloque le service vocal (réglage de sécurité, contrôle parental ou stratégie du PC).','audio-capture':'Aucun micro ne répond : branche un micro ou ferme l’application qui l’utilise.',NotFoundError:'Aucun micro détecté sur cet ordinateur.',NotReadableError:'Le micro est utilisé par une autre application ou désactivé dans Windows.',network:'Pas de connexion au service vocal : internet est nécessaire (ou le réseau le bloque).','no-speech':'Aucune voix détectée.'}[c])||('Micro indisponible ('+c+').')}
+function micMsg(t){if(S)S.err=t;const e=$('#micmsg');if(e){e.hidden=!t;e.textContent=t?'⚠️ '+t:''}}
+async function micCheck(){if(!SR)return{ok:false,c:'nosr'};if(!window.isSecureContext)return{ok:false,c:'insecure'};if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return{ok:false,c:'nomd'};
+try{const st=await navigator.mediaDevices.getUserMedia({audio:true});st.getTracks().forEach(t=>t.stop());return{ok:true}}catch(e){return{ok:false,c:e.name}}}
+function mkSR(){const r=new SR();r.lang='fr-FR';r.continuous=true;r.interimResults=true;r.maxAlternatives=5;try{if(LOCAL)r.processLocally=true;if('phrases' in r&&window.SpeechRecognitionPhrase&&S&&S.ws)r.phrases=S.ws.map(w=>new SpeechRecognitionPhrase(w,6))}catch(e){}return r}
+async function diag(){const o=[],out=()=>{$('#dg').innerHTML=o.map(x=>`<p>${x}</p>`).join('')};
+o.push('Navigateur : '+esc((navigator.userAgent.match(/(Edg|OPR|Chrome|Firefox|Version)\/[\d.]+/g)||[]).join(' ')));
+o.push(SR?'✅ Reconnaissance vocale gérée par ce navigateur':'❌ '+micErr('nosr'));o.push(window.isSecureContext?'✅ Page sécurisée (https)':'❌ '+micErr('insecure'));out();
+try{const q=await navigator.permissions.query({name:'microphone'});o.push('Autorisation du site : '+({granted:'✅ accordée',denied:'❌ refusée',prompt:'à demander'}[q.state]||q.state))}catch(e){o.push('Autorisation du site : état inconnu')}
+try{const d=(await navigator.mediaDevices.enumerateDevices()).filter(x=>x.kind=='audioinput');o.push(d.length?`✅ ${d.length} entrée(s) micro détectée(s)`:'❌ Aucun micro détecté')}catch(e){}
+out();const m=await micCheck();o.push(m.ok?'✅ Accès au micro obtenu':'❌ '+esc(micErr(m.c)));out();
+if(m.ok)await new Promise(res=>{const r=mkSR();let got=0;const add=t=>{o.push(t);out()};
+r.onaudiostart=()=>add('✅ Le navigateur capte le son : dis « maison » maintenant');
+r.onresult=e=>{got=1;add('✅ Entendu : « '+esc(e.results[e.results.length-1][0].transcript)+' »')};
+r.onerror=e=>{if(e.error!='aborted')add('❌ '+esc(micErr(e.error)))};
+r.onend=()=>{if(!got)add('Fin du test : rien n’a été transcrit.');res()};
+try{r.start();setTimeout(()=>{try{r.stop()}catch(e){}},7000)}catch(e){add('❌ Impossible de démarrer : '+esc(e.message));res()}})}
+function micV(){return `<button class="ghost" onclick="go('set')">← Réglages</button><div class="card"><h2>Test du micro</h2><p>Clique sur « Lancer », autorise le micro si le navigateur le demande, puis dis « maison » quand c’est indiqué.</p><div class="row"><button class="btn go" onclick="diag()">Lancer le test</button></div><div id="dg"></div></div>`}
+function asrStart(){asrStop();const p=S.ph[S.pi];if(!SR||!D.set.asr||!rdPh(p))return;if(S.mic&&!S.mic.ok)return;const pk=p.k,r=mkSR();S.rc=r;S.on=1;
+r.onresult=e=>{if(!S)return;const late=Date.now()-S.tw<1200&&S.pw!=null,idx=late?S.pw:S.cw;if(idx==null)return;
+for(let i=e.resultIndex;i<e.results.length;i++){const R=e.results[i],alts=Array.from(R).map(a=>a.transcript);const en=ent(pk,idx);if(R.isFinal)en.ch.push(alts[0]);else if(idx==S.cw)liveTxt('🎤 '+alts[0]);chk(pk,idx,alts);if(idx==S.cw&&S.pw!=null)chk(pk,S.pw,alts)}};
+r.onerror=e=>{const c=e.error;if(c=='no-speech'||c=='aborted')return;if(c=='language-not-supported'&&LOCAL){LOCAL=0;asrStart();return}if(S)S.on=0;micMsg(micErr(c))};
+r.onend=()=>{if(S&&S.on&&S.rc===r)setTimeout(()=>{try{r.start()}catch(e){}},30)};
+try{r.start()}catch(e){}}
+function asrStop(){if(S&&S.rc){const r=S.rc;S.on=0;S.rc=null;r.onend=null;try{r.stop()}catch(e){}}}
+function beginPhase(){S.intro=0;S.cw=undefined;S.pw=undefined;asrStart();render()}
+
+/* navigation */
+let V='home',X=null,S=null,R=null;
+function go(v,x){V=v;if(x!==undefined)X=x;render()}
+function render(){document.body.dataset.sp=D.set.sp?1:0;document.documentElement.style.setProperty('--fs',[1,1.25,1.5][D.set.fs-1]||1.25);
+$('#app').innerHTML=({home,lists,badges,set:sets,pre,play,res,edit:editV,log:logV,mic:micV})[V]();
+const i=$('#in')||$('#fix');if(i)i.focus();if(V=='play')afterPlay()}
+const nav=t=>`<div class="nav">${[['home','🏠 Jouer'],['lists','📝 Listes'],['badges','🏅 Badges'],['set','⚙️ Réglages']].map(b=>`<button class="${b[0]==t?'on':''}" onclick="go('${b[0]}')">${b[1]}</button>`).join('')}</div>`;
+function head(){const L=lvl(D.xp),b=50*L*(L-1),n=50*L*(L+1),p=(D.xp-b)/(n-b)*100;
+return `<div class="card hd"><div class="av">${D.av}</div><div class="grow"><input class="nm" aria-label="Prénom" placeholder="Ton prénom" value="${esc(D.name)}" onchange="D.name=this.value;save()"><div>Niveau ${L} · ${D.xp} XP</div><span class="bar"><i style="width:${p}%"></i></span></div><div class="pill">🔥 ${strk()}</div></div>`}
+
+function home(){const hard=Object.keys(D.w).filter(w=>D.w[w].ko&&D.w[w].box<2);
+const card=(id,n,c,m)=>{const r=c?Math.round(m/c*5):0;return `<button class="card lc" onclick="openList('${id}')"><b>${esc(n)}</b><span>${c} mots</span><span class="st">${'★'.repeat(r)}${'☆'.repeat(5-r)}</span></button>`};
+return nav('home')+head()+`<h2>Choisis une liste</h2><div class="grid">${D.lists.filter(l=>l.w.length).map(l=>card(l.id,l.n,l.w.length,mast(l))).join('')}${hard.length?`<button class="card lc" onclick="openList('hard')"><b>🔁 Mots à revoir</b><span>${hard.length} mots</span></button>`:''}</div>`}
+function openList(id){const l=id=='hard'?{n:'🔁 Mots à revoir',w:Object.keys(D.w).filter(w=>D.w[w].ko&&D.w[w].box<2)}:D.lists.find(l=>l.id==id);go('pre',{list:l})}
+function pre(){const l=X.list,s=D.set,st=[s.on.l0&&'Découverte',s.on.l1&&'Lecture 1',s.on.l2&&'Lecture 2 + copie',s.on.l3&&'Lecture 3 rapide',s.on.rec&&'Rappel écrit'].filter(Boolean);
+return `<button class="ghost" onclick="go('home')">← Retour</button><div class="card"><h2>${esc(l.n)}</h2><div class="chips">${l.w.map(w=>`<span>${esc(w)}</span>`).join('')}</div>${s.sens?'<p class="note">👨‍👩‍👧 Parent : avant de commencer, demandez ou expliquez le sens des mots.</p>':''}<p>Étapes : ${st.join(' → ')||'aucune (voir réglages)'}</p>${D.set.asr?(SR?'<p class="note">🎤 Le micro écoute pendant les étapes de lecture : autorise-le si le navigateur le demande.</p>':'<p class="note">🎤 Reconnaissance vocale indisponible sur ce navigateur (essaie Chrome ou Edge) : écoute la lecture toi-même.</p>'):''}<div class="row"><button class="btn go" onclick="startS()">Commencer</button></div></div>`}
+
+/* session */
+async function startS(){const s=D.set,l=X.list;
+const ph=[['l0','Découverte : je vois et j’écoute','👂',s.d0],['l1','Lecture 1 : je lis à voix haute','👀',s.d1],['l2',s.copy=='clavier'?'Lecture 2 + copie':'Lecture 2 + copie sur cahier','✏️',s.d2],['l3','Lecture 3 rapide','⚡',s.d3],['rec','Rappel écrit','🧠',0]].filter(p=>s.on[p[0]]).map(p=>({k:p[0],t:p[1],e:p[2],d:p[3]}));
+if(!ph.length||!l.w.length)return alert('Active au moins une étape dans les réglages.');
+const ws=l.w.slice();S={lg:{},list:l,ws,rw:s.shuf?shuf(ws.slice()):ws,ph,pi:0,wi:0,intro:1,ok:0,streak:0,best:0,xp:0,miss:[],t0:Date.now(),paused:0};if(SR&&D.set.asr){const m=await micCheck();if(S){S.mic=m;if(!m.ok)S.err=micErr(m.c)}}go('play')}
+const cur=()=>(S.ph[S.pi].k=='rec'?S.rw:S.ws)[S.wi];
+const typed=p=>p.k=='rec'||(p.k=='l2'&&D.set.copy=='clavier');
+function play(){const p=S.ph[S.pi];
+const top=`<div class="top"><button class="ghost" onclick="quit()" aria-label="Quitter">✕</button><div class="grow"><b>${p.e} ${p.t}</b><span class="bar"><i style="width:${S.intro?0:S.wi/S.ws.length*100}%"></i></span></div><span class="pill" id="clk">0:00</span></div>`;
+if(S.intro){const h={l0:'Regarde chaque mot et écoute-le. Découvre-le bien !',l1:'Lis chaque mot à voix haute, sans écoute. Ils défilent tout seuls.',l2:D.set.copy=='clavier'?'Recopie chaque mot au clavier.':'Prends ton cahier : écris la date, puis copie chaque mot.',l3:'Relis à voix haute, plus vite : tu les connais !',rec:'Écoute chaque mot et écris-le sans regarder.'}[p.k];
+return top+`<div class="card c"><div class="em">${p.e}</div><h2>${p.t}</h2><p>${h}${SR&&D.set.asr&&rdPh(p)?' 🎤 Dis chaque mot deux fois : le micro l’entend mieux.':''}</p>${S.err&&rdPh(p)?`<p class="note">⚠️ ${esc(S.err)}</p>`:''}<button class="btn go" onclick="beginPhase()">C’est parti !</button></div>`}
+const rd=SR&&D.set.asr&&rdPh(p),en=rd&&S.lg[p.k]&&S.lg[p.k][S.wi],live=rd?`<div class="live"><span id="tick">${en&&en.ok?'✅':''}</span> <span id="live">🎤 Je t’écoute…</span></div>`:'';const w=cur(),n=S.ws.length,cnt=`<div class="lab">Mot ${S.wi+1} / ${n}</div>`,ear=D.set.tts&&p.k=='l0'?`<button class="btn" onclick="say(cur())">🔊 Écouter</button>`:'';
+if(!typed(p))return top+`<div class="card stage">${cnt}<div class="word">${esc(w)}</div><span class="bar"><i id="wb"></i></span>${live}${rd?`<div class="note" id="micmsg" ${S.err?'':'hidden'}>⚠️ ${esc(S.err||'')}</div>`:''}<div class="row">${ear}<button class="btn" onclick="S.paused=!S.paused;render()">${S.paused?'▶ Reprendre':'⏸ Pause'}</button><button class="btn" onclick="nxt()">Suivant ▶</button></div>${p.k=='l2'?'<p>✏️ Copie le mot sur ton cahier</p>':''}</div>`;
+const rec=p.k=='rec';
+return top+`<div class="card stage">${cnt}${rec?`<button class="big" onclick="say(cur())" aria-label="Écouter le mot">🔊</button><p>Écoute et écris le mot</p>`:`<div class="word">${esc(w)}</div><p>Recopie le mot</p>`}${S.fb?fbH():`<input id="in" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key=='Enter')check()"><div><button class="btn go" onclick="check()">Valider ✔</button></div>${rec&&D.set.tr?'<span class="bar"><i id="wb"></i></span>':''}`}</div>`}
+function fbH(){const f=S.fb,rec=S.ph[S.pi].k=='rec';let a='',c='';
+f.ops.forEach(o=>{const e=esc;if(o[0]=='k'){a+=`<b class="k">${e(o[1])}</b>`;c+=`<b class="k">${e(o[1])}</b>`}else if(o[0]=='s'){a+=`<b class="w">${e(o[1])}</b>`;c+=`<b class="f">${e(o[2])}</b>`}else if(o[0]=='m'){a+=`<b class="g">_</b>`;c+=`<b class="f">${e(o[1])}</b>`}else a+=`<b class="w">${e(o[1])}</b>`});
+const msg=f.ok?`🎉 Bravo !${f.g?` +${f.g} XP`:''}`:'Presque ! Regarde la bonne écriture :';
+return `<p><b>${msg}</b></p><div class="lab">Ta réponse</div><div class="fb">${a||'…'}</div>${f.ok?'':`<div class="lab">Le bon mot</div><div class="fb">${c}</div><p>Recopie-le pour le retenir :</p><input id="fix" autocomplete="off" autocapitalize="none" spellcheck="false" oninput="$('#nb').disabled=norm(this.value)!=norm(cur())" onkeydown="if(event.key=='Enter'&&!$('#nb').disabled)nxt()">`}<div><button id="nb" class="btn go" ${f.ok?'':'disabled'} onclick="nxt()">Suivant ▶</button></div>`}
+function check(){clearTimeout(S.tmo);if(S.fb)return;const w=cur(),p=S.ph[S.pi],a=($('#in')||{}).value||'',ok=norm(a)==norm(w);S.fb={ok,ops:diff(norm(w),norm(a)),g:0};
+if(p.k=='rec'){(S.lg.rec=S.lg.rec||[]).push({w,a,ok});const st=D.w[w]=D.w[w]||{ok:0,ko:0,box:0};
+if(ok){S.ok++;S.streak++;S.best=Math.max(S.best,S.streak);S.fb.g=10+2*Math.min(S.streak,5);S.xp+=S.fb.g;st.ok++;st.box=Math.min(3,st.box+1)}else{S.streak=0;S.miss.push(w);st.ko++;st.box=0}save()}
+sfx(ok);render()}
+function afterPlay(){clearTimeout(S.tmo);if(S.intro)return;const p=S.ph[S.pi],w=cur(),key=S.pi+'-'+S.wi;
+if(S.said!=key){S.said=key;if(p.k=='l0'||p.k=='rec')say(w);if(rdPh(p)&&SR&&D.set.asr){S.pw=S.cw;S.cw=S.wi;S.tw=Date.now();ent(p.k,S.wi)}}
+const b=$('#wb');let t=0;
+if(!typed(p)&&!S.paused)t=p.d;else if(p.k=='rec'&&!S.fb&&D.set.tr)t=D.set.tr;
+if(b&&t){b.style.transition='none';b.style.width='0';b.offsetWidth;b.style.transition=`width ${t}s linear`;b.style.width='100%'}
+if(t)S.tmo=setTimeout(typed(p)?check:nxt,t*1000)}
+function nxt(){if(S.wait)return;clearTimeout(S.tmo);S.fb=null;S.wi++;if(S.wi>=S.ws.length){const rd=S.on;S.pw=S.cw;S.tw=Date.now();asrStop();S.pi++;S.wi=0;S.intro=1;if(S.pi>=S.ph.length){if(rd){S.wait=1;setTimeout(finish,1300);return}return finish()}}render()}
+function quit(){if(confirm('Arrêter la session ?')){clearTimeout(S.tmo);asrStop();if(window.speechSynthesis)speechSynthesis.cancel();S=null;go('home')}}
+setInterval(()=>{const c=$('#clk');if(c&&S){const s=Math.floor((Date.now()-S.t0)/1000);c.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}},1000);
+
+function finish(){const n=S.ws.length,rec=D.set.on.rec,perf=rec&&!S.miss.length,g=S.xp+20+(perf?30:0),L0=lvl(D.xp);
+D.xp+=g;D.st.s++;D.st.ok+=S.ok;D.st.best=Math.max(D.st.best,S.best);if(perf)D.st.perf++;
+const t=ymd();if(D.day!=t){D.strk=D.day==ymd(1)?D.strk+1:1;D.day=t}
+D.hist.unshift({d:t,l:S.list.n,ok:S.ok,n:rec?n:0});D.hist.length=Math.min(D.hist.length,30);const lg={};S.ph.forEach(p=>{const L=S.lg[p.k];if(L)lg[p.k]=p.k=='rec'?L:S.ws.map((w,i)=>L[i]||{w,ok:0,ch:[]})});D.log.unshift({t:Date.now(),l:S.list.n,ph:S.ph.map(p=>[p.k,p.t]),lg});D.log.length=Math.min(D.log.length,20);
+const nb=B.map((b,i)=>[b,i]).filter(x=>!D.bd[x[1]]&&x[0][3](D));nb.forEach(x=>D.bd[x[1]]=t);save();
+R={g,perf,L0,L1:lvl(D.xp),nb:nb.map(x=>x[0]),miss:S.miss,ok:S.ok,n,rec,list:S.list};S=null;go('res');if(!rec||R.ok/n>=.7)conf()}
+function res(){const r=R;return `<div class="card c"><div class="em">${D.av}</div><h2>Bravo${D.name?' '+esc(D.name):''} !</h2>${r.rec?`<p class="word" style="font-size:2.4em">${r.ok} / ${r.n}</p>`:''}<p class="pill" style="display:inline-block">+${r.g} XP</p>${r.perf?'<p>✨ Sans faute !</p>':''}${r.L1>r.L0?`<p><b>🎊 Niveau ${r.L1} atteint !</b></p>`:''}${r.nb.map(b=>`<p>${b[0]} Nouveau badge : <b>${b[1]}</b></p>`).join('')}${r.miss.length?`<h2>À revoir</h2><div class="chips">${r.miss.map(w=>`<span>${esc(w)}</span>`).join('')}</div>`:''}<div class="row"><button class="btn go" onclick="X={list:R.list};startS()">Rejouer</button><button class="btn" onclick="go('log',{i:0})">🔍 Détail</button><button class="btn" onclick="go('home')">Accueil</button></div></div>`}
+
+/* listes */
+function lists(){return nav('lists')+D.lists.map(l=>`<div class="card li"><div class="grow"><b>${esc(l.n)}</b><div class="lab">${l.w.length} mots</div></div><button class="ghost" onclick="go('edit',{id:'${l.id}'})">✏️</button><button class="ghost" onclick="delList('${l.id}')">🗑</button></div>`).join('')+`<div class="row"><button class="btn go" onclick="go('edit',{id:null})">＋ Nouvelle liste</button></div>`}
+function editV(){const l=D.lists.find(l=>l.id==X.id)||{n:'',w:[]};return `<div class="card"><h2>${X.id?'Modifier la liste':'Nouvelle liste'}</h2><label>Nom<input class="fx" id="en" value="${esc(l.n)}"></label><label>Mots (un par ligne)<textarea class="fx" id="ew">${esc(l.w.join('\n'))}</textarea></label><div class="row"><button class="btn go" onclick="saveList()">Enregistrer</button><button class="btn" onclick="go('lists')">Annuler</button></div></div>`}
+function saveList(){const n=$('#en').value.trim()||'Ma liste',w=$('#ew').value.split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean),l=D.lists.find(l=>l.id==X.id);
+if(l){l.n=n;l.w=w}else D.lists.push({id:'c'+Date.now(),n,w});save();go('lists')}
+function delList(id){if(confirm('Supprimer cette liste ?')){D.lists=D.lists.filter(l=>l.id!=id);save();render()}}
+
+/* détail des sessions */
+function logV(){const L=D.log;if(!L.length)return `<button class="ghost" onclick="go('set')">← Réglages</button><div class="card"><p>Aucune session enregistrée.</p></div>`;
+const i=Math.min(X.i||0,L.length-1),e=L[i],dt=t=>new Date(t).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'});
+return `<button class="ghost" onclick="go('set')">← Réglages</button><div class="card"><label>Session<select class="fx" onchange="go('log',{i:+this.value})">${L.map((x,j)=>`<option value="${j}" ${j==i?'selected':''}>${dt(x.t)} · ${esc(x.l)}</option>`).join('')}</select></label></div>`+e.ph.map(([k,t])=>{const d=e.lg[k];
+if(!d)return `<div class="card"><b>${esc(t)}</b><p class="lab">${k=='rec'||k=='l0'?'Pas de trace pour cette étape.':'Pas de trace (micro désactivé ou indisponible).'}</p></div>`;
+if(k=='rec')return `<div class="card"><b>${esc(t)}</b> · ${d.filter(x=>x.ok).length}/${d.length} justes<table class="lg">${d.map(x=>`<tr><td>${x.ok?'✅':'❌'}</td><td>${esc(x.w)}</td><td>${esc(x.a||'—')}</td></tr>`).join('')}</table></div>`;
+return `<div class="card"><b>${esc(t)}</b> · ${d.filter(x=>x.ok).length}/${d.length} reconnus<p class="lab">Touche ✅/❌ pour corriger toi-même la validation.</p><table class="lg">${d.map((x,j)=>`<tr><td><button class="ghost" onclick="tg(${i},'${k}',${j})">${x.ok?'✅':'❌'}</button></td><td>${esc(x.w)}</td><td>${esc(x.ch.join(' · ')||'(rien entendu)')}</td></tr>`).join('')}</table></div>`}).join('')}
+function tg(i,k,j){const x=D.log[i].lg[k][j];x.ok=x.ok?0:1;save();render()}
+
+/* badges + avatars */
+function badges(){const L=lvl(D.xp);
+return nav('badges')+head()+`<h2>Mes badges (${Object.keys(D.bd).length}/${B.length})</h2><div class="bd">${B.map((b,i)=>`<div class="card ${D.bd[i]?'':'lock'}"><div class="e">${b[0]}</div><b>${b[1]}</b><div class="lab">${b[2]}</div></div>`).join('')}</div><h2>Mes avatars</h2><div class="avs">${AVS.map(a=>`<button class="${D.av==a[0]?'on':''}" ${L<a[1]?'disabled':''} title="Niveau ${a[1]}" onclick="D.av='${a[0]}';save();render()">${L<a[1]?'🔒':a[0]}</button>`).join('')}</div>`}
+
+/* réglages */
+function ss(k,v){D.set[k]=v;save()}
+function so(k,v){D.set.on[k]=v?1:0;save()}
+function sets(){const s=D.set,num=(k,l,mn,mx,st)=>`<label>${l}<input type="number" min="${mn}" max="${mx}" step="${st}" value="${s[k]}" onchange="ss('${k}',+this.value)"></label>`,chk=(k,l,o)=>`<label>${l}<input type="checkbox" ${(o?s.on[k]:s[k])?'checked':''} onchange="${o?`so('${k}'`:`ss('${k}'`},this.checked${o?'':'?1:0'})"></label>`;
+const vs=window.speechSynthesis?speechSynthesis.getVoices().filter(v=>/^fr/i.test(v.lang)):[];
+return nav('set')+`<div class="card set"><h2>Étapes</h2>${chk('l0','Découverte (voir + écouter)',1)}${chk('l1','Lecture 1',1)}${chk('l2','Lecture 2 + copie',1)}${chk('l3','Lecture 3 rapide',1)}${chk('rec','Rappel écrit',1)}<label>Copie (étape 2)<select onchange="ss('copy',this.value)"><option value="cahier" ${s.copy=='cahier'?'selected':''}>Sur cahier</option><option value="clavier" ${s.copy=='clavier'?'selected':''}>Au clavier</option></select></label>
+<h2>Durées (secondes par mot)</h2>${num('d0','Découverte',.5,20,.5)}${num('d1','Lecture 1',.5,20,.5)}${num('d2','Lecture 2 + copie',.5,30,.5)}${num('d3','Lecture 3 rapide',.5,20,.5)}${num('tr','Minuteur du rappel (0 = aucun)',0,60,1)}
+<h2>Voix</h2>${chk('tts','Voix à la découverte et au rappel')}<label>Vitesse<input type="number" min="0.4" max="1.4" step="0.1" value="${s.rate}" onchange="ss('rate',+this.value)"></label><label>Voix<select onchange="ss('voice',this.value)"><option value="">Automatique</option>${vs.map(v=>`<option ${v.name==s.voice?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label><div class="row"><button class="ghost" onclick="say('maison')">🔊 Tester la voix</button></div>
+<h2>Lecture à voix haute</h2>${chk('asr','Micro : transcrire et valider la lecture')}${chk('adv','Mot suivant dès qu’il est reconnu')}${SR?'':'<p class="note">Non disponible sur ce navigateur (essaie Chrome ou Edge).</p>'}<div class="row"><button class="btn" onclick="go('mic')">🎤 Tester le micro</button></div><h2>Confort</h2><label>Taille du texte<select onchange="ss('fs',+this.value);render()"><option value="1" ${s.fs==1?'selected':''}>Normale</option><option value="2" ${s.fs==2?'selected':''}>Grande</option><option value="3" ${s.fs==3?'selected':''}>Très grande</option></select></label>${chk('sp','Lettres espacées')}${chk('snd','Sons')}${chk('shuf','Mélanger l’ordre au rappel')}${chk('sens','Rappel « sens des mots » avant la session')}
+<h2>Dernières sessions</h2>${D.hist.slice(0,5).map(h=>`<p>${h.d} · ${esc(h.l)} · ${h.n?h.ok+'/'+h.n:'lecture'}</p>`).join('')||'<p>Aucune pour l’instant.</p>'}
+<div class="row"><button class="btn" onclick="go('log',{i:0})">🔍 Détail des sessions (parent)</button></div><h2>Données (stockées sur cet appareil)</h2><div class="row"><button class="btn" onclick="exp()">💾 Exporter</button><label class="btn">📂 Importer<input type="file" accept=".json" hidden onchange="imp(this.files[0])"></label><button class="btn" onclick="restore()">Remettre les listes ELOR</button><button class="btn red" onclick="reset()">Tout effacer</button></div></div>`}
+function exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download='mots-magiques-sauvegarde.json';a.click()}
+function imp(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.lists)throw 0;D=d;fix();save();go('home')}catch(e){alert('Fichier non valide.')}};r.readAsText(f)}
+function restore(){DL.forEach((l,i)=>{if(!D.lists.some(x=>x.n==l[0]))D.lists.splice(i,0,{id:'d'+i+'_'+Date.now(),n:l[0],w:l[1]})});save();alert('Listes remises.')}
+function reset(){if(confirm('Effacer tous les progrès et les listes ?')){localStorage.removeItem(K);D=init();fix();go('home')}}
+render();
+</script></body></html>
